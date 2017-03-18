@@ -40,7 +40,9 @@ namespace MsgPack
 		public bool ValueBoolean { get; private set; }
 		public uint Length { get; private set; }
 
-		public uint ValueUnsigned { get; private set; }
+        public bool IsNil{ get; private set; }
+
+        public uint ValueUnsigned { get; private set; }
 		public ulong ValueUnsigned64 { get; private set; }
 
 		public int ValueSigned { get; private set; }
@@ -98,7 +100,8 @@ namespace MsgPack
 
 		public bool Read ()
 		{
-			byte[] tmp0 = _tmp0, tmp1 = _tmp1;
+            IsNil = false;
+            byte[] tmp0 = _tmp0, tmp1 = _tmp1;
 			int x = _strm.ReadByte ();
 			if (x < 0)
 				return false; // EOS
@@ -119,6 +122,7 @@ namespace MsgPack
 
 			switch (this.Type) {
 				case TypePrefixes.Nil:
+                    IsNil = true;
 					break;
 				case TypePrefixes.False:
 					ValueBoolean = false;
