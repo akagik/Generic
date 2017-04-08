@@ -10,12 +10,12 @@ public class Debugger : MonoBehaviour
 {
     private int count = 0;
 
-    void Start()
+    protected void Start()
     {
 
     }
 
-    void Update()
+    protected void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
