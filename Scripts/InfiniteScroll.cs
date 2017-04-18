@@ -64,10 +64,10 @@ public class InfiniteScroll : UIBehaviour
 
     public ScrollRect scrollRect;
 
-    //protected override void Awake()
-    //{
-    //    scrollRect = GetComponentInParent<ScrollRect>();
-    //}
+    protected override void Awake()
+    {
+        itemPrototype.gameObject.SetActive(false);
+    }
 
     public void Init(int firstIndex, int total)
     {
@@ -77,10 +77,19 @@ public class InfiniteScroll : UIBehaviour
 
         itemPrototype.gameObject.SetActive(false);
 
-        float height = itemPrototype.sizeDelta.y * total;
-        rectTransform.sizeDelta = new Vector2(0, height);
+        if (direction == Direction.Vertical)
+        {
+            float width = itemPrototype.sizeDelta.y * total;
+            rectTransform.sizeDelta = new Vector2(0, width);
+            rectTransform.SetLocalY(firstIndex * itemPrototype.sizeDelta.y);
+        }
+        else
+        {
+            float width = itemPrototype.sizeDelta.x * total;
+            rectTransform.sizeDelta = new Vector2(width, 0);
+            rectTransform.SetLocalX(firstIndex * itemPrototype.sizeDelta.x);
+        }
 
-        rectTransform.SetLocalY(firstIndex * itemPrototype.sizeDelta.y);
         diffPreFramePosition = -itemScale * firstIndex;
         currentItemNo = firstIndex;
 
