@@ -29,7 +29,8 @@ public class LocalizationManager : SingletonMonoBehaviour<LocalizationManager>
     [ReadOnly]
     [SerializeField]
     private Font _headerFont;
-    private Font headerFont {
+    private Font headerFont
+    {
         get
         {
             if (_headerFont != null)
@@ -69,7 +70,9 @@ public class LocalizationManager : SingletonMonoBehaviour<LocalizationManager>
 
     public int CalcFontSize(int fontBaseSize, LocalizationFontType type)
     {
-        return (int)(fontBaseSize * GetScale(usingLanguage, type));
+        checkReady();
+
+        return (int)(fontBaseSize * getScale(usingLanguage, type));
     }
 
     public static string GetCode(SystemLanguage lang)
@@ -92,6 +95,8 @@ public class LocalizationManager : SingletonMonoBehaviour<LocalizationManager>
 
     public Font GetFont(LocalizationFontType type)
     {
+        checkReady();
+
         if (type == LocalizationFontType.Header)
         {
             return headerFont;
@@ -130,11 +135,11 @@ public class LocalizationManager : SingletonMonoBehaviour<LocalizationManager>
 
                 if (fontType == LocalizationFontType.Header)
                 {
-                    value = new LocalizationValue(item.value, headerFont, GetScale(lang, fontType));
+                    value = new LocalizationValue(item.value, headerFont, getScale(lang, fontType));
                 }
                 else
                 {
-                    value = new LocalizationValue(item.value, contentFont, GetScale(lang, fontType));
+                    value = new LocalizationValue(item.value, contentFont, getScale(lang, fontType));
                 }
             }
             else if (defaultLoadedData.ContainsKey(key.GetKey()))
@@ -159,9 +164,9 @@ public class LocalizationManager : SingletonMonoBehaviour<LocalizationManager>
 
             localizedText.Add(keyStr, value);
         }
-        Debug.Log("Data loaded, dictionary contains: " + localizedText.Count + " entries : " + lang);
 
         isReady = true;
+        Debug.Log("Data loaded, dictionary contains: " + localizedText.Count + " entries : " + lang);
     }
 
     public LocalizationData GetLocalizationData(SystemLanguage lang)
@@ -199,20 +204,9 @@ public class LocalizationManager : SingletonMonoBehaviour<LocalizationManager>
         return value.value;
     }
 
-    public LocalizationValue GetLocalizedValue(string key, bool useApplicationLang = true)
+    public LocalizationValue GetLocalizedValue(string key)
     {
-        if (!isReady)
-        {
-            if (useApplicationLang)
-            {
-                //LoadLocalizedText(Application.systemLanguage);
-                LoadLocalizedText(SystemLanguage.English);
-            }
-            else
-            {
-                LoadLocalizedText(SystemLanguage.English);
-            }
-        }
+        checkReady();
 
         LocalizationValue result = new LocalizationValue(missingTextString, defaultHeaderFont);
 
@@ -224,7 +218,7 @@ public class LocalizationManager : SingletonMonoBehaviour<LocalizationManager>
         return result;
     }
 
-    private float GetScale(SystemLanguage lang, LocalizationFontType type)
+    private float getScale(SystemLanguage lang, LocalizationFontType type)
     {
         foreach (ScaleSettings settings in scaleSettings)
         {
@@ -235,6 +229,16 @@ public class LocalizationManager : SingletonMonoBehaviour<LocalizationManager>
         }
         return 1f;
     }
+
+    private void checkReady()
+    {
+        if (!isReady)
+        {
+            isReady = true;
+            LoadLocalizedText(Application.systemLanguage);
+            //LoadLocalizedText(SystemLanguage.English);
+        }
+    }
 }
 
 public struct LocalizationValue
@@ -243,7 +247,7 @@ public struct LocalizationValue
     public Font font;
     public float fontSizeScale;
 
-    public LocalizationValue(string _value, Font _font, float scale=1f)
+    public LocalizationValue(string _value, Font _font, float scale = 1f)
     {
         value = _value;
         font = _font;
