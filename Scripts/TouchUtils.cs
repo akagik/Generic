@@ -20,40 +20,21 @@ public static class TouchUtils
         }
     }
 
-    public static bool isTouched
+    public static Touch GetTouch(int index)
     {
-        get
-        {
-            return touchCount > 0;
-        }
-    }
-
-    public static TouchPhase phase
-    {
-        get
-        {
 #if UNITY_EDITOR || UNITY_STANDALONE
-            if (Input.GetMouseButtonDown(0)) { return TouchPhase.Began; }
-            if (Input.GetMouseButtonUp(0)) { return TouchPhase.Ended; }
-            return TouchPhase.Moved;
-#else
-            return Input.GetTouch(0).phase;
-#endif
-        }
-    }
+        Touch touch = new Touch();
+        touch.position = Input.mousePosition;
 
-    public static Vector3 position
-    {
-        get
-        {
-#if UNITY_EDITOR || UNITY_STANDALONE
-            return Input.mousePosition;
+        if (Input.GetMouseButtonDown(0)) touch.phase = TouchPhase.Began;
+        else if (Input.GetMouseButtonUp(0)) touch.phase = TouchPhase.Ended;
+        else touch.phase = TouchPhase.Moved;
+
+        touch.fingerId = 0;
+
+        return touch;
 #else
-            Touch touch = Input.GetTouch(0);
-            TouchPosition.x = touch.position.x;
-            TouchPosition.y = touch.position.y;
-            return TouchPosition;
+            return Input.GetTouch(index);
 #endif
-        }
     }
 }
