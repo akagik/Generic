@@ -16,7 +16,7 @@ public class UnityKeyRemapEditor : EditorWindow
     private static EditorWindow _mouseOverWindow;
 
     // オブジェクトの共通Openコマンド
-    [MenuItem("Tools/ToggleActive #a")]
+    [MenuItem("Tools/ToggleActive %&a")]
     static void ToggleActive()
     {
         foreach (var aObj in Selection.gameObjects)
@@ -25,7 +25,7 @@ public class UnityKeyRemapEditor : EditorWindow
         }
     }
 
-    [MenuItem("Tools/Toggle Lock #c")]
+    [MenuItem("Tools/Toggle Lock %&c")]
     static void ToggleInspectorLock()
     {
         if (_mouseOverWindow == null)
