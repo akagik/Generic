@@ -16,6 +16,21 @@ public class LocalizationManager : SingletonMonoBehaviour<LocalizationManager>
     [SerializeField]
     private List<ScaleSettings> scaleSettings = new List<ScaleSettings>();
 
+    public SystemLanguage useLanguage
+    {
+        get
+        {
+            if (enforce)
+            {
+                return enforceLanguage;
+            }
+            else
+            {
+                return Application.systemLanguage;
+            }
+        }
+    }
+
     [ReadOnly]
     public SystemLanguage usingLanguage;
 
@@ -244,14 +259,7 @@ public class LocalizationManager : SingletonMonoBehaviour<LocalizationManager>
         {
             isReady = true;
 
-            if (enforce)
-            {
-                LoadLocalizedText(enforceLanguage);
-            }
-            else
-            {
-                LoadLocalizedText(Application.systemLanguage);
-            }
+            LoadLocalizedText(useLanguage);
         }
     }
 }

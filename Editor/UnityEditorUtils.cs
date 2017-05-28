@@ -14,9 +14,19 @@ class UnityEditorUtils : EditorWindow
     [MenuItem("Tools/Update Localization Text")]
     static void UpdateLocalizationText()
     {
+        var existingManager = GameObject.FindObjectOfType(typeof(LocalizationManager)) as LocalizationManager;
+
+        SystemLanguage useLang = SystemLanguage.English;
+
+        if (existingManager != null)
+        {
+            useLang = existingManager.useLanguage;
+        }
+
         var managerObj = new GameObject("TempLocalizationManager");
         var manager = managerObj.AddComponent<LocalizationManager>();
-        manager.LoadLocalizedText(SystemLanguage.English);
+
+        manager.LoadLocalizedText(useLang);
 
         foreach (var aObj in GameObject.FindObjectsOfType(typeof(LocalizedText)))
         {
@@ -42,4 +52,5 @@ class UnityEditorUtils : EditorWindow
 
         DestroyImmediate(managerObj);
     }
+
 }
