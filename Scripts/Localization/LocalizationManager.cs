@@ -10,11 +10,14 @@ public class LocalizationManager : SingletonMonoBehaviour<LocalizationManager>
 
     public SystemLanguage DefaultLang = SystemLanguage.English;
 
-    [ReadOnly]
-    public SystemLanguage usingLanguage;
+    public bool enforce;
+    public SystemLanguage enforceLanguage;
 
     [SerializeField]
     private List<ScaleSettings> scaleSettings = new List<ScaleSettings>();
+
+    [ReadOnly]
+    public SystemLanguage usingLanguage;
 
     [ReadOnly]
     [SerializeField]
@@ -45,7 +48,7 @@ public class LocalizationManager : SingletonMonoBehaviour<LocalizationManager>
         }
     }
 
-    //[ReadOnly]
+    [ReadOnly]
     [SerializeField]
     private Font _contentFont;
     private Font contentFont
@@ -240,8 +243,15 @@ public class LocalizationManager : SingletonMonoBehaviour<LocalizationManager>
         if (!isReady)
         {
             isReady = true;
-            LoadLocalizedText(Application.systemLanguage);
-            //LoadLocalizedText(SystemLanguage.English);
+
+            if (enforce)
+            {
+                LoadLocalizedText(enforceLanguage);
+            }
+            else
+            {
+                LoadLocalizedText(Application.systemLanguage);
+            }
         }
     }
 }
