@@ -4,16 +4,40 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Button))]
 public class ToggleButton : MonoBehaviour
 {
-    public bool isOn;
+    [SerializeField]
+    private bool _isOn;
+    public bool isOn
+    {
+        get
+        {
+            return _isOn;
+        }
+
+        set
+        {
+            _isOn = value;
+            onValueChanged.Invoke(isOn);
+            setImage();
+        }
+    }
+
     public Graphic onGraphic;
     public Graphic offGraphic;
     public Toggle.ToggleEvent onValueChanged;
 
     private Button button;
+    private bool isInit;
 
-    private void Start()
+    private void Awake()
     {
+        if (!isInit) init();
+    }
+
+    private void init()
+    {
+        isInit = true;
         button = GetComponent<Button>();
+        Debug.Log("ToggleButton Awake : " + button);
 
         if (offGraphic == null)
         {
@@ -23,15 +47,16 @@ public class ToggleButton : MonoBehaviour
         button.onClick.AddListener(() =>
         {
             isOn = !isOn;
-            onValueChanged.Invoke(isOn);
-            setImage();
         });
 
         setImage();
     }
 
+
     private void setImage()
     {
+        if (!isInit) init();
+
         if (isOn)
         {
             button.targetGraphic = onGraphic;
