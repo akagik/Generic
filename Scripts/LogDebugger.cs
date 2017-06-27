@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class LogDebugger : MonoBehaviour
 {
+    public int maxLength = 5000;
+
     [SerializeField]
     private Text m_textUI = null;
 
@@ -132,7 +134,15 @@ public class LogDebugger : MonoBehaviour
                 break;
         }
 
-        m_textUI.text = i_logText + System.Environment.NewLine + m_textUI.text;
+        if (m_textUI.text.Length > maxLength)
+        {
+            m_textUI.text = i_logText + System.Environment.NewLine + m_textUI.text.Substring(0, maxLength);
+        }
+        else
+        {
+            m_textUI.text = i_logText + System.Environment.NewLine + m_textUI.text;
+        }
+
 
     }
 }

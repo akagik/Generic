@@ -636,6 +636,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2303c521bdcc1742bdba2ff4933cd9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxLength: 5000
   m_textUI: {fileID: 114931541904611310}
   _isActive: 1
   minButtonText: {fileID: 114791761789309512}
@@ -743,7 +744,7 @@ MonoBehaviour:
   m_Content: {fileID: 224363640578475644}
   m_Horizontal: 1
   m_Vertical: 1
-  m_MovementType: 1
+  m_MovementType: 2
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
