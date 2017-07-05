@@ -12,6 +12,14 @@ public static class GenericUtils
         return new Vector3(x, y, z);
     }
 
+    public static Vector2 RandomVector2(float min, float max)
+    {
+        float x = UnityEngine.Random.Range(min, max);
+        float y = UnityEngine.Random.Range(min, max);
+
+        return new Vector2(x, y);
+    }
+
     public static void Swap<T>(ref T lhs, ref T rhs)
     {
         T temp;
