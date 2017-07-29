@@ -2,19 +2,16 @@
 using UnityEngine.UI;
 
 
+/// <summary>
+/// Enable() を呼び出してからログの記録を開始する.
+/// キャンバスを表示/非表示するのには Show() / Hide() を使う.
+/// </summary>
 public class LogDebugger : MonoBehaviour
 {
     public int maxLength = 5000;
 
     [SerializeField]
     private Text m_textUI = null;
-
-    [SerializeField]
-    private bool _isActive;
-    public bool isActive
-    {
-        get { return _isActive; }
-    }
 
     [SerializeField]
     private Text minButtonText;
@@ -28,28 +25,6 @@ public class LogDebugger : MonoBehaviour
     {
         m_textUI.text = "";
         canvas = GetComponent<Canvas>();
-        canvas.enabled = false;
-        check();
-    }
-
-    private void check()
-    {
-        if (!canvas.enabled && isActive)
-        {
-            Application.logMessageReceived += OnLogMessage;
-            canvas.enabled = true;
-        }
-
-        if (canvas.enabled && !isActive)
-        {
-            Application.logMessageReceived -= OnLogMessage;
-            canvas.enabled = false;
-        }
-    }
-
-    public void Update()
-    {
-        check();
     }
 
     public void Clear()
@@ -89,14 +64,22 @@ public class LogDebugger : MonoBehaviour
 
     public void Enable()
     {
-        _isActive = true;
         Application.logMessageReceived += OnLogMessage;
     }
 
     public void Denable()
     {
-        _isActive = false;
         Application.logMessageReceived -= OnLogMessage;
+    }
+
+    public void Show()
+    {
+        canvas.enabled = true;
+    }
+
+    public void Hide()
+    {
+        canvas.enabled = false;
     }
 
     private void OnLogMessage(string i_logText, string i_stackTrace, LogType i_type)
