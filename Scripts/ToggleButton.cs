@@ -16,7 +16,6 @@ public class ToggleButton : MonoBehaviour
         set
         {
             _isOn = value;
-            onValueChanged.Invoke(isOn);
             setImage();
         }
     }
@@ -47,6 +46,7 @@ public class ToggleButton : MonoBehaviour
         button.onClick.AddListener(() =>
         {
             isOn = !isOn;
+            onValueChanged.Invoke(isOn);
         });
 
         setImage();
