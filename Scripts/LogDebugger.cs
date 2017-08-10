@@ -82,6 +82,10 @@ public class LogDebugger : MonoBehaviour
         canvas.enabled = false;
     }
 
+    public void Log(string message) {
+        OnLogMessage(message, "", LogType.Log);
+    }
+
     private void OnLogMessage(string i_logText, string i_stackTrace, LogType i_type)
     {
         if (string.IsNullOrEmpty(i_logText))
