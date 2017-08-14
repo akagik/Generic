@@ -34,7 +34,7 @@ public class Debugger : MonoBehaviour
 
             string path = string.Format("{0}/{1}{2}.png", tempdir, "screenshot", id);
 
-            Application.CaptureScreenshot(path);
+            ScreenCapture.CaptureScreenshot(path);
 
             save(id + 1, metapath);
             Debug.Log("CaptureScreenshot: " + path);
