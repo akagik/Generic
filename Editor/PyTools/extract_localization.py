@@ -1,11 +1,21 @@
+#!python3
 import os
+import os.path
 import json
+import sys
 from mycsv import csv2list
 from code_generator import CodeGenerator
 
-CSV_PATH = "../Localization/strings.csv"
-RESOURCES_PATH = "../../Resources/Localization"
-SCRIPTS_PATH = "../../Scripts/Localization/LocalizationKey.cs"
+if len(sys.argv) <= 2:
+    print("引数が不足しています: Genericへのパス PROJECT_DIRへのパス")
+    sys.exit(1)
+
+GENERIC_ROOT = sys.argv[1]
+PROJECT_DIR = sys.argv[2]
+
+CSV_PATH = PROJECT_DIR + "/Editor/Localization/strings.csv"
+RESOURCES_PATH = PROJECT_DIR + "/Resources/Localization"
+SCRIPTS_PATH = GENERIC_ROOT + "/Scripts/Localization/LocalizationKey.cs"
 ENUM_NAME = "LocalizationKey"
 
 def get_enum_value(key):
@@ -37,7 +47,13 @@ def get_json_list(l, lang):
     return d
 
 if __name__ == "__main__":
-    l = csv2list(CSV_PATH)
+    print("CSV_PATH='" + CSV_PATH + "'")
+    if os.path.exists(CSV_PATH):
+        print("Loading")
+        l = csv2list(CSV_PATH)
+    else:
+        print("CSV_PATH Not Found")
+        l = [{"KEY": "test", "TYPE": "Header", "en": "test"}]
 
     cg = CodeGenerator()
     cg.put_using("UnityEngine")

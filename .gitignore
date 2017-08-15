@@ -1,6 +1,7 @@
 __pycache__/
 __pycache__.meta
 *.py[cod]
+*.py[cod].meta
 .idea
 
 /Scripts/Localization/LocalizationKey.cs*
