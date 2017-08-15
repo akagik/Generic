@@ -27,9 +27,9 @@ public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : MonoBe
     {
         if (this != Instance)
         {
-            Destroy(this);
+            Destroy(gameObject);
 
-            Debug.LogErrorFormat("{0} は既に他のGameObjectにアタッチされているため、コンポーネントを破棄しました. アタッチされているGameObjectは {1} です.", typeof(T), Instance.gameObject.name);
+            Debug.LogWarningFormat("{0} は既に他のGameObjectにアタッチされているため、コンポーネントを破棄しました. アタッチされているGameObjectは {1} です.", typeof(T), Instance.gameObject.name);
 
             return;
         }
