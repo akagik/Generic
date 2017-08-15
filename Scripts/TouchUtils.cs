@@ -3,8 +3,6 @@ using UnityEngine;
 
 public static class TouchUtils
 {
-    private static Vector3 TouchPosition = Vector3.zero;
-
     public static int touchCount
     {
         get

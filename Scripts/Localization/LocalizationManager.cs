@@ -1,9 +1,20 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System;
 
+/// <summary>
+/// 言語ごとにテキストを局所化するために機能を備えたクラス。
+/// 
+/// 言語ごとに設定できるのは、文字列、フォント、フォントサイズスケール。
+/// LocalizationManager はテキストの種類として Header と Content の２つを持ち、
+/// 種類ごとのフォントを設定出来る。
+/// 
+/// このクラスは使用している言語を Application.systemLanguage を参照して言語を判断するが、
+/// enforce フラグを True にすることで指定の言語に強制することができる。
+/// また、Application.systemLanguage の言語のリソースが存在しない場合はデフォルトの言語を使う。
+/// </summary>
 public class LocalizationManager : SingletonMonoBehaviour<LocalizationManager>
 {
     public bool isReady { get; private set; }
@@ -85,6 +96,44 @@ public class LocalizationManager : SingletonMonoBehaviour<LocalizationManager>
     private Dictionary<string, LocalizationValue> localizedText;
 
     private string missingTextString = "Localized text not found";
+
+    [System.Serializable]
+    private class LocalizationData
+    {
+        public LocalizationItem[] items;
+
+        public LocalizationItem GetItemAt(string key)
+        {
+            foreach (LocalizationItem item in items)
+            {
+                if (item.key == key)
+                {
+                    return item;
+                }
+            }
+            return null;
+        }
+
+        public bool ContainsKey(string key)
+        {
+            foreach (LocalizationItem item in items)
+            {
+                if (item.key == key && item.value.Trim().Length > 0)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
+    [System.Serializable]
+    private class LocalizationItem
+    {
+        public string key = null;
+        public string value = null;
+        public string type = null;
+    }
 
     public int CalcFontSize(int fontBaseSize, LocalizationFontType type)
     {
@@ -187,7 +236,7 @@ public class LocalizationManager : SingletonMonoBehaviour<LocalizationManager>
         Debug.Log("Data loaded, dictionary contains: " + localizedText.Count + " entries : " + lang);
     }
 
-    public LocalizationData GetLocalizationData(SystemLanguage lang)
+    private LocalizationData GetLocalizationData(SystemLanguage lang)
     {
         LocalizationData loadedData;
 

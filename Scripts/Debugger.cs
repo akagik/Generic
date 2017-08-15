@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System;
 using System.IO;
@@ -70,7 +70,7 @@ public class Debugger : MonoBehaviour
             ObjectPacker packer = new ObjectPacker();
             return packer.Unpack<List<int>>(ivBytes)[0];
         }
-        catch (FileNotFoundException e)
+        catch (FileNotFoundException)
         {
             save(0, path);
         }

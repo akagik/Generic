@@ -6,9 +6,6 @@ using System.IO;
 using System;
 using System.Linq;
 using System.Reflection;
-using UnityEditor;
-using UnityEngine;
-using System.Collections;
 using Object = UnityEngine.Object;
 
 public class UnityKeyRemapEditor : EditorWindow
