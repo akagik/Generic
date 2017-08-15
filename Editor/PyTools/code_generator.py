@@ -1,5 +1,5 @@
 from enum import Enum
-from excel import Type
+from mytype import Type
 
 class Accessor(Enum):
     PUBLIC = "public"
