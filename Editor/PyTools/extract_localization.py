@@ -6,15 +6,17 @@ import sys
 from mycsv import csv2list
 from code_generator import CodeGenerator
 
-if len(sys.argv) <= 2:
-    print("引数が不足しています: Genericへのパス PROJECT_DIRへのパス")
+if len(sys.argv) <= 1:
+    print("Project Root へのパスを引数に与えてください.")
     sys.exit(1)
 
-GENERIC_ROOT = sys.argv[1]
-PROJECT_DIR = sys.argv[2]
+PROJECT_ROOT = sys.argv[1]
 
-CSV_PATH = PROJECT_DIR + "/Editor/Localization/strings.csv"
-RESOURCES_PATH = PROJECT_DIR + "/Resources/Localization"
+ASSETS_DIR = os.path.join(PROJECT_ROOT, "Assets")
+GENERIC_ROOT = os.path.join(PROJECT_ROOT, "Assets", "Generic")
+
+CSV_DIR = ASSETS_DIR + "/Editor/Localization"
+RESOURCES_PATH = ASSETS_DIR + "/Resources/Localization"
 SCRIPTS_PATH = GENERIC_ROOT + "/Scripts/Localization/LocalizationKey.cs"
 ENUM_NAME = "LocalizationKey"
 
@@ -46,14 +48,43 @@ def get_json_list(l, lang):
         d["items"].append(jsonitem)
     return d
 
+def check_validation(l):
+    print("check validation")
+
+    # TYPE の値が不正な場合は Header を代入する
+    for e in l:
+        if e["TYPE"] != "Header" and e["TYPE"] != "Content":
+            e["TYPE"] = "Header"
+
+    # キーが重複してないかチェック
+    s = set()
+
+    for e in l:
+        if e['KEY'] in s:
+            print("ERROR!!! Duplical Key: {0}".format(e['KEY']))
+            sys.exit(1)
+        else:
+            s.add(e['KEY'])
+
 if __name__ == "__main__":
-    print("CSV_PATH='" + CSV_PATH + "'")
-    if os.path.exists(CSV_PATH):
-        print("Loading")
-        l = csv2list(CSV_PATH)
-    else:
-        print("CSV_PATH Not Found")
+    print("CSV_DIR='" + CSV_DIR + "'")
+
+    # 読み込みデータのリスト.
+    # 各要素は1キーワードを表す辞書.
+    l = []
+    if os.path.exists(CSV_DIR) and os.path.isdir(CSV_DIR):
+        for f in os.listdir(CSV_DIR):
+            new_path = os.path.join(CSV_DIR, f)
+            storage, ext = os.path.splitext(new_path)
+
+            if not os.path.isdir(new_path) and ext == ".csv":
+                print("Loading {}".format(new_path))
+                l.extend(csv2list(new_path))
+    if len(l) == 0:
+        print("Value is empyt, and set default value.")
         l = [{"KEY": "test", "TYPE": "Header", "en": "test"}]
+
+    check_validation(l)
 
     cg = CodeGenerator()
     cg.put_using("UnityEngine")
@@ -91,10 +122,12 @@ if __name__ == "__main__":
     cg.end_function()
     cg.end_class()
 
+    # LocalizationKey.cs を保存する.
     with open(SCRIPTS_PATH, mode="w") as f:
         f.write(cg.code)
         print("write " + SCRIPTS_PATH)
 
+    # 各言語フォルダに strings.txt を保存する.
     for lang in get_langs(list(l[0].keys())):
         dir_path = "{}/{}".format(RESOURCES_PATH, lang)
         path = "{}/strings.txt".format(dir_path)
