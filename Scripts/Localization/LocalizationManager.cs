@@ -265,13 +265,19 @@ public class LocalizationManager : SingletonMonoBehaviour<LocalizationManager>
         return font;
     }
 
-    public string Get(LocalizationKey key)
+	public string Get(LocalizationKey key)
     {
         LocalizationValue value = GetLocalizedValue(key.GetKey());
         return value.value;
     }
 
-    public LocalizationValue GetLocalizedValue(string key)
+	public string Get(string key)
+	{
+        LocalizationValue value = GetLocalizedValue(key);
+		return value.value;
+	}
+
+	public LocalizationValue GetLocalizedValue(string key)
     {
         checkReady();
 

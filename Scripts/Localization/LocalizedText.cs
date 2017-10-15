@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class LocalizedText : MonoBehaviour
 {
-    public LocalizationKey key;
+    public string key;
     public int fontSize;
 
     public int CalcFontSize(LocalizationValue value)
@@ -15,7 +15,7 @@ public class LocalizedText : MonoBehaviour
     {
         Text text = GetComponent<Text>();
 
-        LocalizationValue value = LocalizationManager.Instance.GetLocalizedValue(key.GetKey());
+        LocalizationValue value = LocalizationManager.Instance.GetLocalizedValue(key);
 
         text.text = value.value;
         text.font = value.font;
