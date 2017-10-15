@@ -48,11 +48,24 @@ def get_json_list(l, lang):
         d["items"].append(jsonitem)
     return d
 
+def is_valid(e):
+    if 'KEY' not in e:
+        return False
+    if not e['KEY']:
+        return False
+    return True 
+
 def check_validation(l):
     print("check validation")
+    newl = []
+
+    # 不正な列を削除
+    for e in l:
+        if is_valid(e):
+            newl.append(e)
 
     # TYPE の値が不正な場合は Header を代入する
-    for e in l:
+    for e in newl:
         if 'TYPE' not in e:
             e["TYPE"] = "Header"
         elif e["TYPE"] != "Header" and e["TYPE"] != "Content":
@@ -61,12 +74,14 @@ def check_validation(l):
     # キーが重複してないかチェック
     s = set()
 
-    for e in l:
+    for e in newl:
         if e['KEY'] in s:
             print("ERROR!!! Duplical Key: {0}".format(e['KEY']))
             sys.exit(1)
         else:
             s.add(e['KEY'])
+
+    return newl
 
 if __name__ == "__main__":
     print("CSV_DIR='" + CSV_DIR + "'")
@@ -86,7 +101,7 @@ if __name__ == "__main__":
         print("Value is empyt, and set default value.")
         l = [{"KEY": "test", "TYPE": "Header", "en": "test"}]
 
-    check_validation(l)
+    l = check_validation(l)
 
     cg = CodeGenerator()
     cg.put_using("UnityEngine")
