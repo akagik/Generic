@@ -53,7 +53,9 @@ def check_validation(l):
 
     # TYPE の値が不正な場合は Header を代入する
     for e in l:
-        if e["TYPE"] != "Header" and e["TYPE"] != "Content":
+        if 'TYPE' not in e:
+            e["TYPE"] = "Header"
+        elif e["TYPE"] != "Header" and e["TYPE"] != "Content":
             e["TYPE"] = "Header"
 
     # キーが重複してないかチェック
