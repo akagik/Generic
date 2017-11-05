@@ -10,11 +10,8 @@ public class Debugger : MonoBehaviour
 {
     private int count = 0;
 
-    protected void Start()
-    {
-
-    }
-
+#if DEBUG_MODE
+    // なぜかバグる!!! 原因調査せよ！！！
     protected void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.T))
@@ -103,4 +100,5 @@ public class Debugger : MonoBehaviour
 
         //Debug.Log( Application.dataPath + "/../testscreen-" + count + ".png" );
     }
+#endif
 }
