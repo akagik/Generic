@@ -20,25 +20,41 @@ using System.Reflection;
 
 namespace MsgPack
 {
-	public class ReflectionCacheEntry
-	{
-		const BindingFlags FieldBindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetField | BindingFlags.SetField;
-		
-		public ReflectionCacheEntry (Type t)
-		{
-			FieldInfo[] fields = t.GetFields (FieldBindingFlags);
-			IDictionary<string, FieldInfo> map = new Dictionary<string, FieldInfo> (fields.Length);
-			for (int i = 0; i < fields.Length; i ++) {
-				FieldInfo f = fields[i];
-				string name = f.Name;
-				int pos;
-				if (name[0] == '<' && (pos = name.IndexOf ('>')) > 1)
-					name = name.Substring (1, pos - 1); // Auto-Property (\<.+\>) <ab>
-				map[name] = f;
-			}
-			FieldMap = map;
-		}
+    public class ReflectionCacheEntry
+    {
+        const BindingFlags FieldBindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetField | BindingFlags.SetField;
 
-		public IDictionary<string, FieldInfo> FieldMap { get; private set; }
-	}
+        public ReflectionCacheEntry(Type t)
+        {
+            FieldInfo[] fields = t.GetFields(FieldBindingFlags);
+            IDictionary<string, FieldInfo> map = new Dictionary<string, FieldInfo>();
+            for (int i = 0; i < fields.Length; i++)
+            {
+                FieldInfo f = fields[i];
+
+                // NotSerialized Field はここで弾く.
+                if (!f.IsNotSerialized)
+                {
+                    string name = f.Name;
+                    int pos;
+                    if (name[0] == '<' && (pos = name.IndexOf('>')) > 1)
+                        name = name.Substring(1, pos - 1); // Auto-Property (\<.+\>) <ab>
+                    map[name] = f;
+                }
+            }
+            FieldMap = map;
+        }
+
+        public IDictionary<string, FieldInfo> FieldMap { get; private set; }
+
+        public override string ToString()
+        {
+            string ret = "ReflectionMap:\n";
+            foreach (KeyValuePair<string, FieldInfo> pair in FieldMap)
+            {
+                ret += "\t- [" + pair.Key + "]\n";
+            }
+            return ret;
+        }
+    }
 }
