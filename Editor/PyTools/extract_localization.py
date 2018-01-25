@@ -1,4 +1,26 @@
 #!python3
+#
+# 引数に PROJECT_ROOT (Assets を含むフォルダへのパス) を渡す.
+# PROJECT_ROOT/Assets/Editor/Localization/*.csv を読み込んで以下を出力する:
+#
+# - PROJECT_ROOT/Assets/Resources/Localization/[lang]/strings.txt
+# - PROJECT_ROOT/Assets/Generic/Scripts/Localization/LocalizationKey.cs
+#
+# 入力する csv は KEY(必須), TYPE(任意) を列として含む.
+# さらに必要に応じて各言語(ja, en, ko, zh)の列を含む.
+#
+# -------------------------------------------------
+# example.csv
+# -------------------------------------------------
+# KEY, TYPE, ja, en, Description
+# title, Header, ニートRPG, NEET RPG, タイトルで使う
+# msg1, Content, こんにちは, hello, 村人のセリフ1
+# -------------------------------------------------
+#
+# TYPE は Header, Content のいずれかの値.
+# KEY は一意に識別できるIdentifier.
+# Description は無視される.
+#
 import os
 import os.path
 import json
@@ -20,6 +42,8 @@ RESOURCES_PATH = ASSETS_DIR + "/Resources/Localization"
 SCRIPTS_PATH = GENERIC_ROOT + "/Scripts/Localization/LocalizationKey.cs"
 ENUM_NAME = "LocalizationKey"
 
+LANGUAGES = ["ja", "en", "ko", "zh"]
+
 def get_enum_value(key):
     words = key.strip().split(" ")
     words = ["{}{}".format(w[0].upper(), w[1:]) for w in words]
@@ -33,8 +57,11 @@ def get_langs(keys):
     ret = []
 
     for key in keys:
-        if key != "KEY" and key != "TYPE":
-            ret.append(key)
+        if key == "KEY" or key == "TYPE":
+            continue
+        if key not in LANGUAGES:
+            continue
+        ret.append(key)
     return ret
 
 def get_json_list(l, lang):
@@ -59,7 +86,7 @@ def check_validation(l):
     print("check validation")
     newl = []
 
-    # 不正な列を削除
+    # 不正な行を削除
     for e in l:
         if is_valid(e):
             newl.append(e)
