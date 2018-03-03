@@ -46,4 +46,22 @@ public static class GenericUtils
             }
     }
 
+    public static void InsertSort<T>(T[] a, Func<T, IComparable> key)
+    {
+        int n = a.Length;
+        for (int i = 1; i < n; i++)
+            for (int j = i; j >= 1; --j)
+            {
+                if (a[j - 1] != null && key(a[j - 1]).CompareTo(key(a[j])) <= 0)
+                {
+                    break;
+                }
+                else if (a[j] != null && key(a[j]).CompareTo(key(a[j - 1])) > 0)
+                {
+                    break;
+                }
+                GenericUtils.Swap(ref a[j], ref a[j - 1]);
+            }
+    }
+
 }
