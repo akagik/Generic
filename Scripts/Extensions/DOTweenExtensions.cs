@@ -1,4 +1,5 @@
-﻿using System;
+#if DOTWEEN
+using System;
 using UnityEngine.UI;
 using DG.Tweening;
 
@@ -65,3 +66,4 @@ public static class DOTweenExtensions
 		return DOTweenExtensions.DOTextDouble(text, initialValue, finalValue, duration, it => it.ToString());
 	}
 }
+#endif
