@@ -4,22 +4,3 @@ __pycache__.meta
 *.py[cod].meta
 .idea
 
-/Scripts/Localization/LocalizationKey.cs*
-
-/Editor/PyTools/temp/*
-!/Editor/PyTools/temp/.gitkeep
-
-/Editor/Localization/*
-!/Editor/Localization/.gitkeep
-
-/Resources/Localization/en/*
-!/Resources/Localization/en/.gitkeep
-
-/Resources/Localization/ja/*
-!/Resources/Localization/ja/.gitkeep
-
-/Resources/Localization/ko/*
-!/Resources/Localization/ko/.gitkeep
-
-/Resources/Localization/zh/*
-!/Resources/Localization/zh/.gitkeep
