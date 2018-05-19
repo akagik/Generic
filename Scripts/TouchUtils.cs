@@ -7,7 +7,7 @@ public static class TouchUtils
     {
         get
         {
-#if UNITY_EDITOR || UNITY_STANDALONE
+#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_WEBGL
             if (Input.GetMouseButtonDown(0)) return 1;
             if (Input.GetMouseButton(0)) return 1;
             if (Input.GetMouseButtonUp(0)) return 1;
@@ -20,7 +20,7 @@ public static class TouchUtils
 
     public static Touch GetTouch(int index)
     {
-#if UNITY_EDITOR || UNITY_STANDALONE
+#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_WEBGL
         Touch touch = new Touch();
         touch.position = Input.mousePosition;
 
