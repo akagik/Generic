@@ -252,8 +252,13 @@ namespace MsgPack
                 reader.ReadValueRaw(_buf, 0, (int)reader.Length);
                 string name = Encoding.UTF8.GetString(_buf, 0, (int)reader.Length);
                 FieldInfo f;
+
+                // フィールド名が見つからないときに例外を吐くのでなく無視する
                 if (!entry.FieldMap.TryGetValue(name, out f))
-                    throw new FormatException();
+                {
+                    //throw new FormatException();
+                    continue;
+                }
                 f.SetValue(o, Unpack(reader, f.FieldType));
             }
 
