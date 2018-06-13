@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 public static class DictionaryExtensions
 {
@@ -6,5 +7,10 @@ public static class DictionaryExtensions
     {
         V value;
         return self.TryGetValue(key, out value) ? value : defaultValue;
+    }
+
+    public static string ToString<TKey, TValue>(this IDictionary<TKey, TValue> dictionary)
+    {
+        return "{" + string.Join(", ", dictionary.Select(kv => "'" + kv.Key + "': " + kv.Value).ToArray()) + "}";
     }
 }
