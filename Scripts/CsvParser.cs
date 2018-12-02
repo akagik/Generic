@@ -54,6 +54,7 @@ public static class CsvParser
                 string value = values[j].Trim();
                 value = UnquoteString(value);
                 value = value.Replace("\"\"", "\"");
+                value = value.Replace("\\n", "\n");
                 value = value.Replace("\\", "");
 
                 //value = value.TrimStart(TRIM_CHARS).TrimEnd(TRIM_CHARS).Replace("\\", "");
