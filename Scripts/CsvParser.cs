@@ -38,11 +38,16 @@ public static class CsvParser
     {
         var list = new List<List<string>>();
 
-        var lines = Regex.Split(text, LINE_SPLIT_RE);
+        var lines = new List<string>(Regex.Split(text, LINE_SPLIT_RE));
 
-        if (lines.Length <= 1) return list;
+        // 最後の行が空行なら削除する.
+        if (lines[lines.Count - 1].Length == 0) {
+            lines.RemoveAt(lines.Count - 1);
+        }
 
-        for (var i = 0; i < lines.Length - 1; i++)
+        if (lines.Count <= 0) return list;
+
+        for (var i = 0; i < lines.Count; i++)
         {
             var values = Regex.Split(lines[i], SPLIT_RE);
             if (values.Length == 0) continue;
