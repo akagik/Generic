@@ -54,6 +54,36 @@ public static class SceneUtils
     }
 
     /// <summary>
+    /// 指定の buildIndex のシーンを読み込んで、指定の型の参照を取得してそれを返す.
+    /// 指定の型が見つかれば即座にそれを返す.
+    /// </summary>
+    public static IEnumerator WaitForSceneLoaded<T>(int buildIndex) where T : UnityEngine.Object
+    {
+        T[] foundStates = GameObject.FindObjectsOfType<T>();
+
+        // 型T のオブジェクトが見つかればそれをセットする.
+        if(foundStates.Length > 0)
+        {
+            yield return foundStates[0];
+            yield break;
+        }
+
+        // 型T のオブジェクトが見つからなければシーンをロードする.
+        var op = SceneManager.LoadSceneAsync(buildIndex,LoadSceneMode.Additive);
+        while(!op.isDone)
+        {
+            yield return null;
+        }
+
+        // currentState が取得できるまで繰り返す.
+        while(foundStates.Length == 0)
+        {
+            foundStates = GameObject.FindObjectsOfType<T>();
+        }
+        yield return foundStates[0];
+    }
+
+    /// <summary>
     /// シーンパスからシーン名のみを取り出して、それを返す.
     /// 
     ///　例えば "Assets/Scenes/01_Home.unity" というシーンパスの場合,
