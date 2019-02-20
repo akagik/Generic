@@ -52,4 +52,17 @@ public static class SceneUtils
         }
         yield return foundStates[0];
     }
+
+    /// <summary>
+    /// シーンパスからシーン名のみを取り出して、それを返す.
+    /// 
+    ///　例えば "Assets/Scenes/01_Home.unity" というシーンパスの場合,
+    /// "01_Home" を返す.
+    /// </summary>
+    public static string GetSceneName(string scenePath)
+    {
+        string[] pathSplits = scenePath.Split('/');
+        string[] splits = pathSplits[pathSplits.Length - 1].Split('.');
+        return splits[0];
+    }
 }
