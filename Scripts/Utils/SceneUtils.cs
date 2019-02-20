@@ -65,4 +65,12 @@ public static class SceneUtils
         string[] splits = pathSplits[pathSplits.Length - 1].Split('.');
         return splits[0];
     }
+
+    /// <summary>
+    /// 指定した buildIndex に対応するシーン名を返す.
+    /// </summary>
+    public static string GetSceneName(int buildIndex)
+    {
+        return SceneUtils.GetSceneName(SceneUtility.GetScenePathByBuildIndex(buildIndex));
+    }
 }
