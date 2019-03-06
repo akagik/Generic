@@ -13,7 +13,25 @@ public class FlipAnimMaterial : FlipAnimation
 
     private Material copiedMaterial;
 
-    public void Setup()
+    public override void Setup()
+    {
+        base.Setup();
+        CreateMaterial();
+    }
+
+    public override void Setup(Sprite[] sprites)
+    {
+        base.Setup(sprites);
+        CreateMaterial();
+    }
+
+    public override void Setup(Sprite[] sprites,float secPerSpr)
+    {
+        base.Setup(sprites, secPerSpr);
+        CreateMaterial();
+    }
+
+    void CreateMaterial()
     {
         if(copiedMaterial == null)
         {

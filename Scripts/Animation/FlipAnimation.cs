@@ -27,7 +27,17 @@ public abstract class FlipAnimation : MonoBehaviour
         }
     }
 
-    public void Setup(Sprite[] sprites,float secPerSpr)
+    public virtual void Setup()
+    {
+        // do nothing
+    }
+
+    public virtual void Setup(Sprite[] sprites)
+    {
+        this.sprites = sprites;
+    }
+
+    public virtual void Setup(Sprite[] sprites,float secPerSpr)
     {
         this.sprites = sprites;
         this.secPerSpr = secPerSpr;
