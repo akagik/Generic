@@ -15,7 +15,7 @@ public static class TouchUtils {
         }
     }
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_WEBGL
     static int updateFrameCount;
     static Vector2 previousPosition;
     static Vector2 currentPosition;
