@@ -22,7 +22,7 @@ public class UnityKeyRemapEditor : EditorWindow
         }
     }
 
-    [MenuItem("Tools/Toggle Lock %&c")]
+    [MenuItem("Tools/Toggle Lock #&l")]
     static void ToggleInspectorLock()
     {
         if (_mouseOverWindow == null)
