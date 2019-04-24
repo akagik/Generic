@@ -1,5 +1,7 @@
 using UnityEngine;
 using System;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 public static class GenericUtils
 {
@@ -64,4 +66,16 @@ public static class GenericUtils
             }
     }
 
+    /// <summary>
+    /// 参照のコピーでなく実体のコピーを行う
+    /// </summary>
+    public static T DeepClone<T>(T obj) {
+        using (var ms = new MemoryStream()) {
+            var formatter = new BinaryFormatter();
+            formatter.Serialize(ms, obj);
+            ms.Position = 0;
+
+            return (T)formatter.Deserialize(ms);
+        }
+    }
 }
