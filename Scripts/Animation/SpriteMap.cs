@@ -8,7 +8,8 @@ using UnityEditor;
 public class SpriteMap : ScriptableObject {
     public Entry[] elements;
 
-    static Dictionary<string, Sprite> mapper;
+    [NonSerialized]
+    Dictionary<string, Sprite> mapper;
 
     public Sprite GetSprite(Sprite pre) {
         if (mapper == null) {
