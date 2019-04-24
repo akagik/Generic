@@ -1,5 +1,7 @@
 ﻿namespace Generic
 {
+
+#if UNITY_EDITOR
     using System.Collections;
     using System.Collections.Generic;
     using UnityEngine;
@@ -49,4 +51,6 @@
             return guids[0];
         }
     }
+#endif
+
 }
