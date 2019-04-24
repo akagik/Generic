@@ -13,11 +13,19 @@ public abstract class FlipAnimation : MonoBehaviour
     Sprite[] sprites;
 
     float elappsedSeconds;
-    int currentIndex;
+    int _currentIndex;
     bool isStop;
 
     public bool playOnAwake;
     public bool autoUpdate;
+
+    public int currentIndex
+    {
+        get
+        {
+            return _currentIndex;
+        }
+    }
 
     void Awake()
     {
@@ -56,7 +64,7 @@ public abstract class FlipAnimation : MonoBehaviour
     public void PlayFromStart()
     {
         elappsedSeconds = 0;
-        currentIndex = 0;
+        _currentIndex = 0;
         isStop = false;
     }
 
@@ -76,13 +84,13 @@ public abstract class FlipAnimation : MonoBehaviour
             return false;
         }
 
-        SetSprite(sprites[currentIndex]);
+        SetSprite(sprites[_currentIndex]);
         elappsedSeconds += Time.deltaTime;
         if(elappsedSeconds >= secPerSpr)
         {
             elappsedSeconds = 0f;
-            currentIndex = (currentIndex + 1) % sprites.Length;
-            return true;
+            _currentIndex = (_currentIndex + 1) % sprites.Length;
+            return _currentIndex == 0;
         }
         return false;
     }
