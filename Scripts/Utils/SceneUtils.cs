@@ -50,6 +50,10 @@ public static class SceneUtils
         {
             foundStates = GameObject.FindObjectsOfType<T>();
         }
+
+        if (foundStates.Length > 1 ) {
+            Debug.LogError("WaitForSceneLoaded: 対象の型のオブジェクトが複数個見つかりました");
+        }
         yield return foundStates[0];
     }
 
