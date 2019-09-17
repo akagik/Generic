@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 public static class StringExtensions
 {
@@ -58,5 +60,12 @@ public static class StringExtensions
     public static string SafeSubstringInByte(this string self, int byteCount)
     {
         return byteCount < self.GetByteCount() ? self.SubstringInByte(byteCount) : self;
+    }
+    
+    public static string RemoveWhitespace(this string self)
+    {
+        return new string(self.ToCharArray()
+            .Where(c => !Char.IsWhiteSpace(c))
+            .ToArray());
     }
 }
