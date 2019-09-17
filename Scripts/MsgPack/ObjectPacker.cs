@@ -16,6 +16,8 @@
 
 using UnityEngine;
 using System;
+using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -107,6 +109,45 @@ namespace MsgPack
                 writer.WriteArrayHeader(ary.Length);
                 for (int i = 0; i < ary.Length; i++)
                     Pack(writer, ary.GetValue(i));
+                return;
+            }
+
+            if (typeof(IList).IsAssignableFrom(t))
+            {
+                IList list = (IList) o;
+                writer.WriteArrayHeader(list.Count);
+
+                for (int i = 0; i < list.Count; i++) {
+                    Pack(writer, list[i]);
+                }
+                return;
+            }
+
+            if (t.IsGenericType) {
+                var setType = typeof(ISet<>).MakeGenericType(t.GetGenericArguments()[0]);
+                if (setType.IsAssignableFrom(t))
+                {
+                    IEnumerable list = (IEnumerable) o;
+                    writer.WriteArrayHeader((int) t.GetProperty("Count").GetValue(o, null));
+
+                    foreach(object e in list) {
+                        Pack(writer, e);
+                    }
+                    return;
+                }
+            }
+
+            if (typeof(IDictionary).IsAssignableFrom(t))
+            {
+                IDictionary dict = (IDictionary) o;
+                writer.WriteArrayHeader(dict.Count);
+
+                IDictionaryEnumerator enumerator = dict.GetEnumerator();
+                while (enumerator.MoveNext()) {
+                    Pack(writer, enumerator.Key);
+                    Pack(writer, enumerator.Value);
+                }
+
                 return;
             }
 
@@ -220,6 +261,68 @@ namespace MsgPack
                 for (int i = 0; i < ary.Length; i++)
                     ary.SetValue(Unpack(reader, et), i);
                 return ary;
+            }
+
+            // IEnumerable 型の場合
+            // 現在は IList, ISet, IDictionary をサポート
+            if (typeof(IEnumerable).IsAssignableFrom(t) && t.IsGenericType) {
+                Type[] generics = t.GetGenericArguments();
+
+                // IList 型の場合
+                if (typeof(IList).IsAssignableFrom(t))
+                {
+                    if (!reader.Read() || (!reader.IsArray() && reader.Type != TypePrefixes.Nil))
+                        throw new FormatException();
+                    if (reader.Type == TypePrefixes.Nil)
+                        return null;
+
+                    Type et = generics.Single();
+                    int count = (int) reader.Length;
+                    Array ary = Array.CreateInstance(et, count);
+
+                    for (int i = 0; i < count; i++) {
+                        ary.SetValue(Unpack(reader, et), i);
+                    }
+                    return Activator.CreateInstance(t, new object[] { ary });
+                }
+
+                // ISet 型の場合
+                var setType = typeof(ISet<>).MakeGenericType(generics[0]);
+                if (setType.IsAssignableFrom(t))
+                {
+                    if (!reader.Read() || (!reader.IsArray() && reader.Type != TypePrefixes.Nil))
+                        throw new FormatException();
+                    if (reader.Type == TypePrefixes.Nil)
+                        return null;
+
+                    Type et = generics.Single();
+                    int count = (int) reader.Length;
+
+                    Array ary = Array.CreateInstance(et, count);
+                    
+                    for (int i = 0; i < count; i++) {
+                        ary.SetValue(Unpack(reader, et), i);
+                    }
+                    return Activator.CreateInstance(t, new object[] { ary });
+                }
+
+                if (typeof(IDictionary).IsAssignableFrom(t))
+                {
+                    if (!reader.Read() || (!reader.IsArray() && reader.Type != TypePrefixes.Nil))
+                        throw new FormatException();
+                    if (reader.Type == TypePrefixes.Nil)
+                        return null;
+
+                    Type kt = generics[0];
+                    Type vt = generics[1];
+
+                    IDictionary dict = (IDictionary) Activator.CreateInstance(t);
+                    int count = (int) reader.Length;
+
+                    for (int i = 0; i < count; i++)
+                        dict[Unpack(reader, kt)] = Unpack(reader, vt);
+                    return dict;
+                }
             }
 
             if (!reader.Read())
