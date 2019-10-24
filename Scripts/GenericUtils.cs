@@ -1,10 +1,13 @@
 using UnityEngine;
 using System;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Runtime.Serialization.Formatters.Binary;
 
 public static class GenericUtils
 {
+    static Regex SnakeCaseRegex = new Regex("[a-z][A-Z]");
+
     public static Vector3 RandomVector3(float min, float max)
     {
         float x = UnityEngine.Random.Range(min, max);
@@ -81,5 +84,25 @@ public static class GenericUtils
 
             return (T) formatter.Deserialize(ms);
         }
+    }
+
+    public static string ToSnakeCase(string str)
+    {
+        var snakeStr = SnakeCaseRegex.Replace(str, m => m.Groups[0].Value[0] + "_" + m.Groups[0].Value[1]).ToLower();
+        return snakeStr;
+    }
+
+    /// <summary>
+    /// UTC 時間を JST 時間に変換する.
+    /// </summary>
+    public static DateTime ToJstTime(DateTime utc)
+    {
+        // Mac では Tokyo Standard Time が見つからないと怒られる
+        // TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time");
+        // return TimeZoneInfo.ConvertTimeFromUtc(utc,tzi);
+
+        // JST は UTC+0900
+        // TODO これだとダメ！！！ロケールが UTC のままになっている
+        return utc + TimeSpan.FromHours(9);
     }
 }
