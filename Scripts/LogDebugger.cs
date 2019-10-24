@@ -82,7 +82,8 @@ public class LogDebugger : MonoBehaviour
         canvas.enabled = false;
     }
 
-    public void Log(string message) {
+    public void Log(string message)
+    {
         OnLogMessage(message, "", LogType.Log);
     }
 
@@ -129,7 +130,5 @@ public class LogDebugger : MonoBehaviour
         {
             m_textUI.text = i_logText + System.Environment.NewLine + m_textUI.text;
         }
-
-
     }
 }
