@@ -21,7 +21,17 @@ public class LogDebugger : MonoBehaviour
 
     private Canvas canvas;
 
-    public void Start()
+    public bool isShow
+    {
+        get { return canvas.enabled; }
+    }
+
+    public bool isMinimum
+    {
+        get { return minButtonText.text == "最大化"; }
+    }
+
+    public void Setup()
     {
         m_textUI.text = "";
         canvas = GetComponent<Canvas>();
@@ -34,7 +44,7 @@ public class LogDebugger : MonoBehaviour
 
     public void OnMMButtonClick()
     {
-        if (minButtonText.text == "最大化")
+        if (isMinimum)
         {
             Maximize();
         }
