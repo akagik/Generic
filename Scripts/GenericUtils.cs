@@ -85,6 +85,14 @@ public static class GenericUtils
             return (T) formatter.Deserialize(ms);
         }
     }
+    
+    /// <summary>
+    /// 四捨五入した値を返す.
+    /// </summary>
+    public static int MidRound(float fVal)
+    {
+        return (int) Math.Round(fVal, MidpointRounding.AwayFromZero);
+    }
 
     public static string ToSnakeCase(string str)
     {
