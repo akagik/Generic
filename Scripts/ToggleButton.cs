@@ -6,12 +6,10 @@ public class ToggleButton : MonoBehaviour
 {
     [SerializeField]
     private bool _isOn;
+
     public bool isOn
     {
-        get
-        {
-            return _isOn;
-        }
+        get { return _isOn; }
 
         set
         {
@@ -70,5 +68,4 @@ public class ToggleButton : MonoBehaviour
             offGraphic.gameObject.SetActive(true);
         }
     }
-
 }

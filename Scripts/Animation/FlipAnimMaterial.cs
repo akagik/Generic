@@ -9,6 +9,7 @@ public class FlipAnimMaterial : FlipAnimation
 {
     [Header("Material 設定")]
     [SerializeField] Material sourceMaterial;
+
     [SerializeField] string texturePropertyName = "_MainTex";
 
     private Material copiedMaterial;
@@ -25,7 +26,7 @@ public class FlipAnimMaterial : FlipAnimation
         CreateMaterial();
     }
 
-    public override void Setup(Sprite[] sprites,float secPerSpr)
+    public override void Setup(Sprite[] sprites, float secPerSpr)
     {
         base.Setup(sprites, secPerSpr);
         CreateMaterial();
@@ -33,7 +34,7 @@ public class FlipAnimMaterial : FlipAnimation
 
     void CreateMaterial()
     {
-        if(copiedMaterial == null)
+        if (copiedMaterial == null)
         {
             copiedMaterial = new Material(sourceMaterial);
             copiedMaterial.hideFlags = HideFlags.HideAndDontSave;
@@ -47,7 +48,7 @@ public class FlipAnimMaterial : FlipAnimation
 
     void OnDisable()
     {
-        if(copiedMaterial != null)
+        if (copiedMaterial != null)
         {
             DestroyImmediate(copiedMaterial);
         }
@@ -59,6 +60,6 @@ public class FlipAnimMaterial : FlipAnimation
     /// </summary>
     public override void SetSprite(Sprite sprite)
     {
-        copiedMaterial.SetTexture(texturePropertyName,sprite.texture);
+        copiedMaterial.SetTexture(texturePropertyName, sprite.texture);
     }
 }

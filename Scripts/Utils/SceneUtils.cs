@@ -13,13 +13,14 @@ public static class SceneUtils
     /// </summary>
     public static bool IsSceneLoaded(string sceneName)
     {
-        for(int i = 0; i < UnityEngine.SceneManagement.SceneManager.sceneCount; i++)
+        for (int i = 0; i < UnityEngine.SceneManagement.SceneManager.sceneCount; i++)
         {
-            if(SceneManager.GetSceneAt(i).name == sceneName)
+            if (SceneManager.GetSceneAt(i).name == sceneName)
             {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -32,28 +33,30 @@ public static class SceneUtils
         T[] foundStates = GameObject.FindObjectsOfType<T>();
 
         // 型T のオブジェクトが見つかればそれをセットする.
-        if(foundStates.Length > 0)
+        if (foundStates.Length > 0)
         {
             yield return foundStates[0];
             yield break;
         }
 
         // 型T のオブジェクトが見つからなければシーンをロードする.
-        var op = SceneManager.LoadSceneAsync(sceneName,LoadSceneMode.Additive);
-        while(!op.isDone)
+        var op = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+        while (!op.isDone)
         {
             yield return null;
         }
 
         // currentState が取得できるまで繰り返す.
-        while(foundStates.Length == 0)
+        while (foundStates.Length == 0)
         {
             foundStates = GameObject.FindObjectsOfType<T>();
         }
 
-        if (foundStates.Length > 1 ) {
+        if (foundStates.Length > 1)
+        {
             Debug.LogError("WaitForSceneLoaded: 対象の型のオブジェクトが複数個見つかりました");
         }
+
         yield return foundStates[0];
     }
 
@@ -66,24 +69,25 @@ public static class SceneUtils
         T[] foundStates = GameObject.FindObjectsOfType<T>();
 
         // 型T のオブジェクトが見つかればそれをセットする.
-        if(foundStates.Length > 0)
+        if (foundStates.Length > 0)
         {
             yield return foundStates[0];
             yield break;
         }
 
         // 型T のオブジェクトが見つからなければシーンをロードする.
-        var op = SceneManager.LoadSceneAsync(buildIndex,LoadSceneMode.Additive);
-        while(!op.isDone)
+        var op = SceneManager.LoadSceneAsync(buildIndex, LoadSceneMode.Additive);
+        while (!op.isDone)
         {
             yield return null;
         }
 
         // currentState が取得できるまで繰り返す.
-        while(foundStates.Length == 0)
+        while (foundStates.Length == 0)
         {
             foundStates = GameObject.FindObjectsOfType<T>();
         }
+
         yield return foundStates[0];
     }
 

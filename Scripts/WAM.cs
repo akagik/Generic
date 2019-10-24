@@ -27,7 +27,7 @@ class WAM
         int h = weights.Length - 1;
 
         a = new int[weights.Length];
-        
+
         wsm = weights.Sum();
         Array.Clear(a, 0, weights.Length);
         Array.Clear(hl, 0, weights.Length);
@@ -39,7 +39,8 @@ class WAM
 
         for (int i = 0; i < p.Length; i++)
         {
-            if (p[i] < 1) {
+            if (p[i] < 1)
+            {
                 hl[l] = i;
                 l += 1;
             }
@@ -73,10 +74,9 @@ class WAM
     public int SelectOne()
     {
         float r = Random.Range(0f, 1f) * p.Length;
-        int i = (int)Math.Floor(r);
+        int i = (int) Math.Floor(r);
         r -= i;
 
         return r < p[i] ? i : a[i];
     }
 }
-

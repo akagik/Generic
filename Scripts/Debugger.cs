@@ -14,7 +14,6 @@ namespace Generic
 
         protected void Start()
         {
-
         }
 
         protected void Update()
@@ -46,7 +45,7 @@ namespace Generic
         private void save(int id, string path)
         {
             ObjectPacker packer = new ObjectPacker();
-            byte[] pack = packer.Pack(new List<int> { id });
+            byte[] pack = packer.Pack(new List<int> {id});
 
             using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write))
             using (BinaryWriter bw = new BinaryWriter(fs))
@@ -76,6 +75,7 @@ namespace Generic
             {
                 save(0, path);
             }
+
             return 0;
         }
 

@@ -21,15 +21,12 @@ public abstract class FlipAnimation : MonoBehaviour
 
     public int currentIndex
     {
-        get
-        {
-            return _currentIndex;
-        }
+        get { return _currentIndex; }
     }
 
     void Awake()
     {
-        if(playOnAwake)
+        if (playOnAwake)
         {
             Play();
         }
@@ -45,7 +42,7 @@ public abstract class FlipAnimation : MonoBehaviour
         this.sprites = sprites;
     }
 
-    public virtual void Setup(Sprite[] sprites,float secPerSpr)
+    public virtual void Setup(Sprite[] sprites, float secPerSpr)
     {
         this.sprites = sprites;
         this.secPerSpr = secPerSpr;
@@ -70,7 +67,7 @@ public abstract class FlipAnimation : MonoBehaviour
 
     void Update()
     {
-        if(autoUpdate)
+        if (autoUpdate)
         {
             OnUpdate();
         }
@@ -79,19 +76,20 @@ public abstract class FlipAnimation : MonoBehaviour
     // アニメーションが1周したときは True を返す.
     public bool OnUpdate()
     {
-        if(isStop)
+        if (isStop)
         {
             return false;
         }
 
         SetSprite(sprites[_currentIndex]);
         elappsedSeconds += Time.deltaTime;
-        if(elappsedSeconds >= secPerSpr)
+        if (elappsedSeconds >= secPerSpr)
         {
             elappsedSeconds = 0f;
             _currentIndex = (_currentIndex + 1) % sprites.Length;
             return _currentIndex == 0;
         }
+
         return false;
     }
 

@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,6 +17,7 @@ public class RainbowUIEffect : BaseMeshEffect
     int dividingLength = 6;
 
     private Color[] _colors;
+
     private Color[] colors
     {
         get
@@ -43,6 +43,7 @@ public class RainbowUIEffect : BaseMeshEffect
             {
                 createColor();
             }
+
             return _colors;
         }
     }
@@ -135,6 +136,7 @@ public class RainbowUIEffect : BaseMeshEffect
                 return i;
             }
         }
+
         Debug.LogErrorFormat("Error: dot: {0}", dot);
         return 0;
     }

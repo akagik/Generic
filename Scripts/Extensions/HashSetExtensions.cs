@@ -11,6 +11,7 @@ public static class HashSetExtensions
         {
             return t;
         }
+
         throw new Exception("set must have at least one element.");
     }
 
@@ -25,8 +26,10 @@ public static class HashSetExtensions
             {
                 return t;
             }
+
             i++;
         }
+
         throw new Exception("Index is out of bound.");
     }
 }

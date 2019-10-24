@@ -3,7 +3,6 @@ using Random = UnityEngine.Random;
 
 public static class MyRandom
 {
-
     public static float NextGaussian(float mu = 0, float sigma = 1)
     {
         var u1 = Random.value;
@@ -19,6 +18,6 @@ public static class MyRandom
     {
         var u = Random.value;
 
-        return - Mathf.Log(1 - u);
+        return -Mathf.Log(1 - u);
     }
 }

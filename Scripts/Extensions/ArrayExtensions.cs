@@ -10,6 +10,7 @@ public static class ArrayExtentions
         {
             return "[" + string.Join(", ", c.Select(s => "\"" + s.ToString() + "\"").ToArray()) + "]";
         }
+
         return "[" + string.Join(", ", c.Select(s => s.ToString()).ToArray()) + "]";
     }
 }

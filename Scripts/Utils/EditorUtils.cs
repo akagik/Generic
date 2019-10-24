@@ -1,6 +1,5 @@
 ﻿namespace Generic
 {
-
 #if UNITY_EDITOR
     using System.Collections;
     using System.Collections.Generic;
@@ -19,7 +18,7 @@
         public static T LoadOnlyOneAsset<T>(string filter) where T : UnityEngine.Object
         {
             string guid = FindGUIDOfOnlyOneAsset(filter);
-            if(guid == null)
+            if (guid == null)
             {
                 throw new System.Exception("ロードに失敗");
             }
@@ -36,15 +35,15 @@
         {
             string[] guids = AssetDatabase.FindAssets(filter);
 
-            if(guids.Length == 0)
+            if (guids.Length == 0)
             {
-                Debug.LogErrorFormat("指定のフィルターのアセットが見つかりません",filter);
+                Debug.LogErrorFormat("指定のフィルターのアセットが見つかりません", filter);
                 return null;
             }
 
-            if(guids.Length > 1)
+            if (guids.Length > 1)
             {
-                Debug.LogErrorFormat("指定のフィルターのアセットが複数見つかりました",filter);
+                Debug.LogErrorFormat("指定のフィルターのアセットが複数見つかりました", filter);
                 return null;
             }
 
@@ -52,5 +51,4 @@
         }
     }
 #endif
-
 }

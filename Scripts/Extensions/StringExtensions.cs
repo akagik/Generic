@@ -24,8 +24,10 @@ public static class StringExtensions
             {
                 count++;
             }
+
             count++;
         }
+
         return count;
     }
 
@@ -43,13 +45,16 @@ public static class StringExtensions
             {
                 count++;
             }
+
             count++;
             if (count > byteCount)
             {
                 break;
             }
+
             tmp += c;
         }
+
         return tmp;
     }
 
@@ -61,7 +66,7 @@ public static class StringExtensions
     {
         return byteCount < self.GetByteCount() ? self.SubstringInByte(byteCount) : self;
     }
-    
+
     public static string RemoveWhitespace(this string self)
     {
         return new string(self.ToCharArray()

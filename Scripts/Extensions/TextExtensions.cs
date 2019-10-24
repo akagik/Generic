@@ -12,5 +12,4 @@ public static class TextExtensions
         c.a = newAlpha;
         text.color = c;
     }
-
 }

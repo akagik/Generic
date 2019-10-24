@@ -4,6 +4,7 @@ using UnityEngine;
 public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : MonoBehaviour
 {
     private static T instance;
+
     public static T Instance
     {
         get
@@ -12,7 +13,7 @@ public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : MonoBe
             {
                 Type t = typeof(T);
 
-                instance = (T)FindObjectOfType(t);
+                instance = (T) FindObjectOfType(t);
                 if (instance == null)
                 {
                     Debug.LogErrorFormat("{0} をアタッチしているGameObjectはありません", t);
@@ -29,7 +30,8 @@ public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : MonoBe
         {
             Destroy(gameObject);
 
-            Debug.LogWarningFormat("{0} は既に他のGameObjectにアタッチされているため、コンポーネントを破棄しました. アタッチされているGameObjectは {1} です.", typeof(T), Instance.gameObject.name);
+            Debug.LogWarningFormat("{0} は既に他のGameObjectにアタッチされているため、コンポーネントを破棄しました. アタッチされているGameObjectは {1} です.",
+                typeof(T), Instance.gameObject.name);
 
             return;
         }

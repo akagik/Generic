@@ -96,7 +96,6 @@ public static class TransformExtensions
         Quaternion rotation = Quaternion.Slerp(t.localRotation, Quaternion.Euler(rot), 1);
 
 
-
         t.localRotation = rotation;
     }
 
@@ -124,7 +123,6 @@ public static class TransformExtensions
         rot.x = x;
 
         Quaternion rotation = Quaternion.Slerp(t.rotation, Quaternion.Euler(rot), 1);
-
 
 
         t.rotation = rotation;

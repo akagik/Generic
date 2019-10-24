@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class FlipAnimImage : FlipAnimation {
+public class FlipAnimImage : FlipAnimation
+{
     [SerializeField]
     Image image;
 
-    public override void SetSprite(Sprite sprite) {
+    public override void SetSprite(Sprite sprite)
+    {
         image.sprite = sprite;
     }
 }

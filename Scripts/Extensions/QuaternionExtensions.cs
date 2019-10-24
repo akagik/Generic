@@ -9,7 +9,7 @@ public static class QuaternionExtensions
         Vector3 nHat = new Vector3(input.x, input.y, input.z).normalized;
         Quaternion vectorBit = new Quaternion(nHat.x, nHat.y, nHat.z, 0)
             .ScalarMultiply(power * Mathf.Acos(input.w / inputMagnitude))
-                .Exp();
+            .Exp();
         return vectorBit.ScalarMultiply(Mathf.Pow(inputMagnitude, power));
     }
 
@@ -39,5 +39,4 @@ public static class QuaternionExtensions
 
         return q * Quaternion.Euler(degreeX, degreeY, 0);
     }
-
 }

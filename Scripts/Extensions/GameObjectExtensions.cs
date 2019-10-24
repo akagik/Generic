@@ -6,9 +6,9 @@ public static class GameObjectExtensions
     {
         T component = obj.GetComponent<T>();
 
-        if(component == null)
+        if (component == null)
         {
-            Debug.LogErrorFormat("Expected to find component of type {0} but found none",typeof(T),obj);
+            Debug.LogErrorFormat("Expected to find component of type {0} but found none", typeof(T), obj);
         }
 
         return component;
@@ -17,13 +17,13 @@ public static class GameObjectExtensions
     /// <summary>
     /// 自分自身を含むすべての子オブジェクトのレイヤーを設定します
     /// </summary>
-    public static void SetLayerRecursively(this GameObject self,int layer)
+    public static void SetLayerRecursively(this GameObject self, int layer)
     {
         self.layer = layer;
 
-        foreach(Transform n in self.transform)
+        foreach (Transform n in self.transform)
         {
-            SetLayerRecursively(n.gameObject,layer);
+            SetLayerRecursively(n.gameObject, layer);
         }
     }
 }

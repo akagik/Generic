@@ -31,6 +31,7 @@ public static class CsvParser
     //}
 
     static string SPLIT_RE = @",(?=(?:[^""]*""[^""]*"")*(?![^""]*""))";
+
     static string LINE_SPLIT_RE = @"\r\n|\n\r|\n|\r";
     //static char[] TRIM_CHARS = { '\"' };
 
@@ -41,7 +42,8 @@ public static class CsvParser
         var lines = new List<string>(Regex.Split(text, LINE_SPLIT_RE));
 
         // 最後の行が空行なら削除する.
-        if (lines[lines.Count - 1].Length == 0) {
+        if (lines[lines.Count - 1].Length == 0)
+        {
             lines.RemoveAt(lines.Count - 1);
         }
 
@@ -66,6 +68,7 @@ public static class CsvParser
                 list[i].Add(value);
             }
         }
+
         return list;
     }
 

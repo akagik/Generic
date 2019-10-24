@@ -12,5 +12,4 @@ public static class SpriteRendererExtensions
         c.a = newAlpha;
         sr.color = c;
     }
-
 }

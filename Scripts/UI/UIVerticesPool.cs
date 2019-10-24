@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public static class UIVerticesPool
 {
     static System.WeakReference verticesBuffer;
+
     public static List<UIVertex> Get()
     {
         List<UIVertex> result = null;
