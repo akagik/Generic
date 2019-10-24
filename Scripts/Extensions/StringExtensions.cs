@@ -73,4 +73,21 @@ public static class StringExtensions
             .Where(c => !Char.IsWhiteSpace(c))
             .ToArray());
     }
+
+    /// <summary>
+    /// pattern が text の部分列になっている場合、true を返す。
+    /// </summary>
+    public static bool IsSubsequence(this string pattern, string text)
+    {
+        int j = 0;
+
+        int targetLength = text.Length;
+        int patternLength = pattern.Length;
+
+        for (int i = 0; i < targetLength && j < patternLength; i++)
+            if (pattern[j] == text[i])
+                j++;
+
+        return (j == patternLength);
+    }
 }
