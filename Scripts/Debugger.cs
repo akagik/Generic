@@ -1,9 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using System;
 using System.IO;
-using System.Collections.Generic;
-using MsgPack;
 
 
 namespace Generic
@@ -11,10 +8,7 @@ namespace Generic
     public class Debugger : MonoBehaviour
     {
         private int count = 0;
-
-        protected void Start()
-        {
-        }
+        private static string savedKey = "Generic/screenshotId";
 
         protected void Update()
         {
@@ -22,61 +16,23 @@ namespace Generic
             {
                 //StartCoroutine(ScreenshotEncode());
 
+                int id = PlayerPrefs.GetInt(savedKey);
+
                 string tempdir = string.Format("{0}/{1}", Application.persistentDataPath, "temp");
-                string file = "medadata";
-                string metapath = string.Format("{0}/{1}", tempdir, file);
 
                 if (!Directory.Exists(tempdir))
                 {
                     Directory.CreateDirectory(tempdir);
                 }
 
-                int id = load(metapath);
-
                 string path = string.Format("{0}/{1}{2}.png", tempdir, "screenshot", id);
 
                 ScreenCapture.CaptureScreenshot(path);
 
-                save(id + 1, metapath);
+                PlayerPrefs.SetInt(savedKey, id + 1);
+                PlayerPrefs.Save();
                 Debug.Log("CaptureScreenshot: " + path);
             }
-        }
-
-        private void save(int id, string path)
-        {
-            ObjectPacker packer = new ObjectPacker();
-            byte[] pack = packer.Pack(new List<int> {id});
-
-            using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write))
-            using (BinaryWriter bw = new BinaryWriter(fs))
-            {
-                bw.Write(pack.Length);
-                bw.Write(pack);
-            }
-        }
-
-        private int load(string path)
-        {
-            byte[] ivBytes = null;
-
-            try
-            {
-                using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
-                using (BinaryReader br = new BinaryReader(fs))
-                {
-                    int length = br.ReadInt32();
-                    ivBytes = br.ReadBytes(length);
-                }
-
-                ObjectPacker packer = new ObjectPacker();
-                return packer.Unpack<List<int>>(ivBytes)[0];
-            }
-            catch (FileNotFoundException)
-            {
-                save(0, path);
-            }
-
-            return 0;
         }
 
         IEnumerator ScreenshotEncode()
