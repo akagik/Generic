@@ -85,7 +85,7 @@ public static class GenericUtils
             return (T) formatter.Deserialize(ms);
         }
     }
-    
+
     /// <summary>
     /// 四捨五入した値を返す.
     /// </summary>
