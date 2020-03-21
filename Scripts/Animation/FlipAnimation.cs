@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 /// <summary>
 /// 連番アニメーションを再生する.
@@ -14,15 +15,15 @@ public abstract class FlipAnimation : MonoBehaviour
 
     float elappsedSeconds;
     int _currentIndex;
-    bool isStop;
+    bool _isStop;
+    private bool playOnce;
 
     public bool playOnAwake;
     public bool autoUpdate;
+    public Action onComplete;
 
-    public int currentIndex
-    {
-        get { return _currentIndex; }
-    }
+    public int currentIndex => _currentIndex;
+    public bool isStop => _isStop;
 
     void Awake()
     {
@@ -50,19 +51,39 @@ public abstract class FlipAnimation : MonoBehaviour
 
     public void Stop()
     {
-        isStop = true;
+        _isStop = true;
+    }
+
+    public void Kill(bool complete = true)
+    {
+        Stop();
+
+        if (complete)
+        {
+            var _onComplete = onComplete;
+            onComplete = null;
+            _onComplete?.Invoke();
+        }
     }
 
     public void Play()
     {
-        isStop = false;
+        playOnce = false;
+        _isStop = false;
     }
 
     public void PlayFromStart()
     {
         elappsedSeconds = 0;
         _currentIndex = 0;
-        isStop = false;
+        _isStop = false;
+        playOnce = false;
+    }
+    
+    public void PlayOnce()
+    {
+        PlayFromStart();
+        playOnce = true;
     }
 
     void Update()
@@ -76,7 +97,7 @@ public abstract class FlipAnimation : MonoBehaviour
     // アニメーションが1周したときは True を返す.
     public bool OnUpdate()
     {
-        if (isStop)
+        if (_isStop)
         {
             return false;
         }
@@ -87,7 +108,14 @@ public abstract class FlipAnimation : MonoBehaviour
         {
             elappsedSeconds = 0f;
             _currentIndex = (_currentIndex + 1) % sprites.Length;
-            return _currentIndex == 0;
+            bool isEnd = _currentIndex == 0;
+
+            if (isEnd && playOnce)
+            {
+                Kill(true);
+            } 
+
+            return isEnd;
         }
 
         return false;
