@@ -113,4 +113,22 @@ public static class GenericUtils
         // TODO これだとダメ！！！ロケールが UTC のままになっている
         return utc + TimeSpan.FromHours(9);
     }
+    
+    /// <summary>
+    /// mod of negative
+    /// </summary>
+    public static int mod(int x, int m) {
+        return (x%m + m)%m;
+    }
+    
+    public static float fmod(float a, float b)
+    {
+        int n = (int)(a / b);
+        a -= n * b;
+        if (a < 0)
+        {
+            a += b;
+        }
+        return a;
+    }
 }
