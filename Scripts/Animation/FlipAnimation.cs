@@ -16,7 +16,7 @@ public abstract class FlipAnimation : MonoBehaviour
     float elappsedSeconds;
     int _currentIndex;
     bool _isStop;
-    private bool playOnce;
+    [SerializeField, ReadOnly] private int loopCount;
 
     public bool playOnAwake;
     public bool autoUpdate;
@@ -30,6 +30,10 @@ public abstract class FlipAnimation : MonoBehaviour
         if (playOnAwake)
         {
             Play();
+        }
+        else
+        {
+            _isStop = true;
         }
     }
 
@@ -66,24 +70,24 @@ public abstract class FlipAnimation : MonoBehaviour
         }
     }
 
-    public void Play()
+    public void Play(int loop = -1)
     {
-        playOnce = false;
         _isStop = false;
+        this.loopCount = loop;
     }
 
-    public void PlayFromStart()
+    public void PlayFromStart(int loop = -1)
     {
         elappsedSeconds = 0;
         _currentIndex = 0;
         _isStop = false;
-        playOnce = false;
+        this.loopCount = loop;
     }
     
     public void PlayOnce()
     {
         PlayFromStart();
-        playOnce = true;
+        this.loopCount = 1;
     }
 
     void Update()
@@ -110,9 +114,14 @@ public abstract class FlipAnimation : MonoBehaviour
             _currentIndex = (_currentIndex + 1) % sprites.Length;
             bool isEnd = _currentIndex == 0;
 
-            if (isEnd && playOnce)
+            if (isEnd)
             {
-                Kill(true);
+                loopCount--;
+
+                if (loopCount == 0)
+                {
+                    Kill(true);
+                }
             } 
 
             return isEnd;
