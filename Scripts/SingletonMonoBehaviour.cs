@@ -5,6 +5,24 @@ public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T : MonoBe
 {
     private static T instance;
 
+    public static bool Exists
+    {
+        get
+        {
+            if (instance == null)
+            {
+                Type t = typeof(T);
+
+                instance = (T) FindObjectOfType(t);
+                if (instance == null)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+
     public static T Instance
     {
         get
