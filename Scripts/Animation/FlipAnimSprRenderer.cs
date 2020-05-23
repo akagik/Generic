@@ -10,4 +10,6 @@ public class FlipAnimSprRenderer : FlipAnimation
     {
         sprRenderer.sprite = sprite;
     }
+
+    public SpriteRenderer spriteRenderer => sprRenderer;
 }

@@ -85,7 +85,7 @@ public static class GenericUtils
             return (T) formatter.Deserialize(ms);
         }
     }
-    
+
     /// <summary>
     /// 四捨五入した値を返す.
     /// </summary>
@@ -112,5 +112,34 @@ public static class GenericUtils
         // JST は UTC+0900
         // TODO これだとダメ！！！ロケールが UTC のままになっている
         return utc + TimeSpan.FromHours(9);
+    }
+
+    /// <summary>
+    /// mod of negative
+    /// </summary>
+    public static int mod(int x, int m)
+    {
+        return (x % m + m) % m;
+    }
+
+    public static float fmod(float a, float b)
+    {
+        int n = (int) (a / b);
+        a -= n * b;
+        if (a < 0)
+        {
+            a += b;
+        }
+
+        return a;
+    }
+
+    public static Vector2 ToCanvasPosition(Vector3 worldPos, Camera camera, RectTransform canvas)
+    {
+        Vector2 ViewportPosition = camera.WorldToViewportPoint(worldPos);
+        Vector2 WorldObject_ScreenPosition = new Vector2(
+            ((ViewportPosition.x * canvas.sizeDelta.x) - (canvas.sizeDelta.x * 0.5f)),
+            ((ViewportPosition.y * canvas.sizeDelta.y) - (canvas.sizeDelta.y * 0.5f)));
+        return WorldObject_ScreenPosition;
     }
 }

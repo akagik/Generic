@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 /// <summary>
 /// 連番アニメーションを再生する.
@@ -14,21 +15,25 @@ public abstract class FlipAnimation : MonoBehaviour
 
     float elappsedSeconds;
     int _currentIndex;
-    bool isStop;
+    bool _isStop;
+    [SerializeField, ReadOnly] private int loopCount;
 
     public bool playOnAwake;
     public bool autoUpdate;
+    public Action onComplete;
 
-    public int currentIndex
-    {
-        get { return _currentIndex; }
-    }
+    public int currentIndex => _currentIndex;
+    public bool isStop => _isStop;
 
     void Awake()
     {
         if (playOnAwake)
         {
             Play();
+        }
+        else
+        {
+            _isStop = true;
         }
     }
 
@@ -50,19 +55,39 @@ public abstract class FlipAnimation : MonoBehaviour
 
     public void Stop()
     {
-        isStop = true;
+        _isStop = true;
     }
 
-    public void Play()
+    public void Kill(bool complete = true)
     {
-        isStop = false;
+        Stop();
+
+        if (complete)
+        {
+            var _onComplete = onComplete;
+            onComplete = null;
+            _onComplete?.Invoke();
+        }
     }
 
-    public void PlayFromStart()
+    public void Play(int loop = -1)
+    {
+        _isStop = false;
+        this.loopCount = loop;
+    }
+
+    public void PlayFromStart(int loop = -1)
     {
         elappsedSeconds = 0;
         _currentIndex = 0;
-        isStop = false;
+        _isStop = false;
+        this.loopCount = loop;
+    }
+    
+    public void PlayOnce()
+    {
+        PlayFromStart();
+        this.loopCount = 1;
     }
 
     void Update()
@@ -76,7 +101,7 @@ public abstract class FlipAnimation : MonoBehaviour
     // アニメーションが1周したときは True を返す.
     public bool OnUpdate()
     {
-        if (isStop)
+        if (_isStop)
         {
             return false;
         }
@@ -87,7 +112,19 @@ public abstract class FlipAnimation : MonoBehaviour
         {
             elappsedSeconds = 0f;
             _currentIndex = (_currentIndex + 1) % sprites.Length;
-            return _currentIndex == 0;
+            bool isEnd = _currentIndex == 0;
+
+            if (isEnd)
+            {
+                loopCount--;
+
+                if (loopCount == 0)
+                {
+                    Kill(true);
+                }
+            } 
+
+            return isEnd;
         }
 
         return false;
