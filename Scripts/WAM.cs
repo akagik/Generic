@@ -2,7 +2,7 @@
 using System.Linq;
 using Random = UnityEngine.Random;
 
-class WAM
+public class WAM
 {
     public float[] weights;
     public float wsm;
