@@ -22,6 +22,8 @@ public static class TouchUtils
     static int updateFrameCount;
     static Vector2 previousPosition;
     static Vector2 currentPosition;
+    static float previousTime;
+    static float currentTime;
 #endif
 
     public static Touch GetTouch(int index)
@@ -33,12 +35,16 @@ public static class TouchUtils
         if (updateFrameCount != Time.frameCount)
         {
             previousPosition = currentPosition;
+            previousTime = currentTime;
+            
             currentPosition = touch.position;
+            currentTime = Time.time;
 
             updateFrameCount = Time.frameCount;
         }
 
         touch.deltaPosition = touch.position - previousPosition;
+        touch.deltaTime = currentTime - previousTime;
 
         if (Input.GetMouseButtonDown(0)) touch.phase = TouchPhase.Began;
         else if (Input.GetMouseButtonUp(0)) touch.phase = TouchPhase.Ended;
