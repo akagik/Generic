@@ -20,7 +20,7 @@
             string guid = FindGUIDOfOnlyOneAsset(filter);
             if (guid == null)
             {
-                throw new System.Exception("ロードに失敗");
+                return null;
             }
 
             string path = AssetDatabase.GUIDToAssetPath(guid);
