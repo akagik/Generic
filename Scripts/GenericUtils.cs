@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Collections.Generic;
 
 public static class GenericUtils
 {
@@ -69,6 +70,27 @@ public static class GenericUtils
 
             GenericUtils.Swap(ref a[j], ref a[j - 1]);
         }
+    }
+
+    public static void InsertSort<T>(List<T> a) where T : IComparable<T>
+    {
+        int n = a.Count;
+        for (int i = 1; i < n; i++)
+            for (int j = i; j >= 1; --j)
+            {
+                if (a[j - 1] != null && a[j - 1].CompareTo(a[j]) <= 0)
+                {
+                    break;
+                }
+                else if (a[j] != null && a[j].CompareTo(a[j - 1]) > 0)
+                {
+                    break;
+                }
+
+                var temp = a[j];
+                a[j] = a[j - 1];
+                a[j - 1] = temp;
+            }
     }
 
     /// <summary>
